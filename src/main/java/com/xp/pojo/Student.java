@@ -1,5 +1,7 @@
 package com.xp.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Student {
@@ -11,6 +13,7 @@ public class Student {
     //1 male, 0 female
     private Integer gender;
     private Grade grade;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birth;
 
     public Integer getId() {

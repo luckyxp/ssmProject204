@@ -50,38 +50,48 @@
         <!-- 引入侧边栏 -->
         <div th:replace="common/extract::side-nav(activeUri='students')"/>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <form>
+            <form action="/student" method="post">
+                <!--发送put请求修改学生信息,
+                       1.springmvc中配置HiddenHttpMethodFilter;
+                       2.页面创建一个post表单;
+                       3.创建一个input项,name="_method" 值就是我们指定的请求方式
+                -->
+                <input type="hidden" name="_method" th:value="put" th:if="${student!=null}">
+                <input type="hidden" name="id" th:value="${student.id}" th:if="${student!=null}">
+
+
+
                 <div class="form-group">
                     <label>LastName</label>
-                    <input type="text" class="form-control" placeholder="zhangsan">
+                    <input name="lastName" type="text" class="form-control" placeholder="zhangsan" th:value="${student!=null}?${student.lastName}">
                 </div>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" class="form-control" placeholder="zhangsan@atguigu.com">
+                    <input name="email" type="email"  class="form-control" placeholder="zhangsan@atguigu.com" th:value="${student!=null}?${student.email}">
                 </div>
                 <div class="form-group">
                     <label>Gender</label><br/>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender"  value="1">
+                        <input class="form-check-input" type="radio" name="gender"  value="1" th:checked="${student!=null}?${student.gender==1}">
                         <label class="form-check-label">男</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender"  value="0">
+                        <input class="form-check-input" type="radio" name="gender"  value="0" th:checked="${student!=null}?${student.gender==0}">
                         <label class="form-check-label">女</label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>department</label>
-                    <select class="form-control">
+                    <select class="form-control" name="grade.id">
                         <!-- 显示的是班级名,value提交的是班级的id -->
-                        <option th:value="${grade.id}" th:each="grade:${grades}" th:text="${grade.gradName}">1</option>
+                        <option th:selected="${student!=null}?${student.grade.id==grade.id}" th:value="${grade.id}" th:each="grade:${grades}" th:text="${grade.gradName}">1</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Birth</label>
-                    <input type="text" class="form-control" placeholder="zhangsan">
+                    <input name="birth" type="text" class="form-control" placeholder="zhangsan" th:value="${student!=null}?${#dates.format(student.birth,'yyyy-MM-dd HH:mm:ss')}">
                 </div>
-                <button type="submit" class="btn btn-primary">添加</button>
+                <button type="submit" class="btn btn-primary" th:text="${student!=null?'修改':'添加'}">添加</button>
             </form>
         </main>
     </div>
